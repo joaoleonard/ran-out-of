@@ -6,11 +6,7 @@ import ListItem from "../components/ListItem.vue";
 const router = useRouter();
 
 const newItem = ref('');
-const items = ref([
-  {id: 1, name: 'Milk', bought: false},
-  {id: 2, name: 'Eggs', bought: false},
-  {id: 3, name: 'Bread', bought: false},
-]);
+const items = ref([]);
 
 const addItem = () => {
   if (newItem.value.trim() !== '') {

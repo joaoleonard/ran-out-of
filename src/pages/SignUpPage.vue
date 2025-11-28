@@ -1,19 +1,19 @@
 <script setup>
 import {ref} from 'vue';
+import { register } from "@/services/auth";
 
 const name = ref('');
 const email = ref('');
-const confirmEmail = ref('');
 const password = ref('');
 const showPassword = ref(false);
 
-const handleSignUp = () => {
-  console.log('Signing up with:', {
-    name: name.value,
-    email: email.value,
-    confirmEmail: confirmEmail.value,
-    password: password.value
-  });
+const handleSignUp = async () => {
+  try {
+    await register(email.value, password.value, name.value);
+    // popup de sucesso
+  } catch (err) {
+    alert(err.message);
+  }
 };
 </script>
 
@@ -25,7 +25,7 @@ const handleSignUp = () => {
       </div>
 
       <form @submit.prevent="handleSignUp" class="space-y-6">
-        <div>
+<!--        <div>
           <label for="name" class="block text-sm font-medium text-gray-300 mb-2">Full Name</label>
           <input
               type="text"
@@ -35,7 +35,7 @@ const handleSignUp = () => {
               placeholder="John Doe"
               required
           />
-        </div>
+        </div>-->
 
         <div>
           <label for="email" class="block text-sm font-medium text-gray-300 mb-2">Email</label>
@@ -43,18 +43,6 @@ const handleSignUp = () => {
               type="email"
               id="email"
               v-model="email"
-              class="w-full px-4 py-3 rounded-lg bg-gray-800 border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200"
-              placeholder="you@example.com"
-              required
-          />
-        </div>
-
-        <div>
-          <label for="confirm-email" class="block text-sm font-medium text-gray-300 mb-2">Confirm Email</label>
-          <input
-              type="email"
-              id="confirm-email"
-              v-model="confirmEmail"
               class="w-full px-4 py-3 rounded-lg bg-gray-800 border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200"
               placeholder="you@example.com"
               required

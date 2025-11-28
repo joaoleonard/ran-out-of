@@ -1,15 +1,17 @@
 <script setup>
 import {ref} from 'vue';
 import {useRouter} from 'vue-router';
+import {login} from "../services/auth.js";
 
 const router = useRouter();
 
 const email = ref('');
 const password = ref('');
 const rememberMe = ref(false);
+const showPassword = ref(false);
 
-const handleLogin = () => {
-  console.log('Logging in with:', {email: email.value, password: password.value, rememberMe: rememberMe.value});
+const handleLogin = async () => {
+  await login(email.value, password.value);
   router.push('/home');
 };
 </script>
@@ -42,21 +44,30 @@ const handleLogin = () => {
           <div class="flex items-center justify-between mb-2">
             <label for="password" class="block text-sm font-medium text-gray-300">Password</label>
             <a href="#" class="text-sm text-indigo-400 hover:text-indigo-300 transition duration-200">Forgot
-              password?</a>
-          </div>
-          <input
-              type="password"
-              id="password"
-              v-model="password"
-              class="w-full px-4 py-3 rounded-lg bg-gray-800 border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200"
-              placeholder="••••••••"
-              required
-          />
-        </div>
+                  password?</a>
+              </div>
+              <div class="relative">
+                <input
+                    :type="showPassword ? 'text' : 'password'"
+                    id="password"
+                    v-model="password"
+                    class="w-full px-4 py-3 rounded-lg bg-gray-800 border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200 pr-10"
+                    placeholder="••••••••"
+                    required
+                />
+                <button
+                    type="button"
+                    @click="showPassword = !showPassword"
+                    class="absolute inset-y-0 right-0 flex items-center px-3 text-gray-400 hover:text-white focus:outline-none"
+                >
+                  <i class="material-icons text-xl">{{ showPassword ? 'visibility' : 'visibility_off' }}</i>
+                </button>
+              </div>
+            </div>
 
-        <div class="flex items-center">
-          <input
-              id="remember-me"
+            <div class="flex items-center">
+              <input
+                  id="remember-me"
               type="checkbox"
               v-model="rememberMe"
               class="h-4 w-4 rounded border-gray-700 bg-gray-800 text-indigo-500 focus:ring-indigo-500 focus:ring-offset-gray-900"
